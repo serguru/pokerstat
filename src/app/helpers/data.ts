@@ -1,5 +1,13 @@
 export const
-    hands = [
+// playedHands = [
+//     'AcAd',
+//     'AcAd',
+//     '2C4D',
+//     '2C4D',
+//     '2C4D',
+// ]
+
+playedHands = [
         'AC4D',
         '8S9H',
         '4D7H',
@@ -49,7 +57,6 @@ export const
         '2h7h',
         'Th4h',
         'Jd7s',
-
     ]
 
 

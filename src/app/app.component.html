@@ -1,25 +1,36 @@
 <div class="larger">Poker statistics</div>
 <br>
 <div class='wrapper'>
-  <table style="width: 500px">
-    <th>Group</th>
-    <th>Normal, %</th>
-    <th>Fact, %</th>
-    <th>Delta, %</th>
-    <tr *ngFor="let value of values">
-      <td>{{value.group}}</td>
+  <table >
+    <th>Success, %</th>
+    <th style="width: 600px">Hands</th>
+    <th>Expected, hands</th>
+    <th>Fact, hands</th>
+    <th>Delta, hands</th>
+
+
+        
+    <tr *ngFor="let row of rows">
       <td>
-        <div>{{value.normal}}</div>
+        <div>{{row.success}}</div>
       </td>
       <td>
-        <div>{{value.fact}}</div>
+        {{row.hands.toString()}}
       </td>
       <td>
-        <div>{{value.delta}}</div>
+        <div>{{row.expected | reduceFloat:2}}</div>
+      </td>
+      <td>
+        <div>{{row.fact | reduceFloat:0}}</div>
+      </td>
+      <td>
+        <div>{{row.delta | reduceFloat:2}}</div>
       </td>
     </tr>
   </table>
 </div>
 <br>
 
-<div class="larger">Hands total: {{ns.length}}</div>
+<div class="larger">Hands total: {{handsTotal}}</div>
+<div class="larger">{{overallResult}}</div>
+
