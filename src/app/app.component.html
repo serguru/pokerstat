@@ -1,20 +1,25 @@
-<h2>Poker statistics</h2>
+<div class="larger">Poker statistics</div>
+<br>
+<div class='wrapper'>
+  <table style="width: 500px">
+    <th>Group</th>
+    <th>Normal, %</th>
+    <th>Fact, %</th>
+    <th>Delta, %</th>
+    <tr *ngFor="let value of values">
+      <td>{{value.group}}</td>
+      <td>
+        <div>{{value.normal}}</div>
+      </td>
+      <td>
+        <div>{{value.fact}}</div>
+      </td>
+      <td>
+        <div>{{value.delta}}</div>
+      </td>
+    </tr>
+  </table>
+</div>
+<br>
 
-<table style="width: 500px">
-  <th>Group</th>
-  <th>Normal, %</th>
-
-  <th *ngFor="let a of values[0].fact; index as i">#{{i + 1}}</th>
-
-  <tr *ngFor="let value of values">
-    
-    <td>{{value.group}}</td>
-    <td>{{value.normal}}</td>
-    <td *ngFor="let a of value.fact">{{a}}</td>
-  </tr>
-  
-</table>
-
-
-<!-- <p>Hands</p>
-<p *ngFor="let n of ns">{{n.toString()}}</p> -->
+<div class="larger">Hands total: {{ns.length}}</div>
