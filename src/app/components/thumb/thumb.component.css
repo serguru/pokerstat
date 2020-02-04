@@ -1,0 +1,29 @@
+.rank {
+    font-size: x-large;
+    display: inline-block;
+    padding-left: 6px;
+}
+
+.suit {
+    font-size: x-large;
+    display: inline-block;
+}
+
+.black {
+    color: black;
+}
+
+.red {
+    color: red;
+}
+
+.wrapper {
+    background-color: #f2f2f2;
+    padding: 5px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.selected {
+    background-color: lightgray;
+}

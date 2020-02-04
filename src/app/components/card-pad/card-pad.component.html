@@ -1,0 +1,7 @@
+<table>
+    <tr *ngFor="let rank of ranks">
+        <td *ngFor="let suit of suites">
+            <app-thumb [suit]="suit" [rank]="rank"></app-thumb>
+        </td>
+    </tr>
+</table>

@@ -1,0 +1,17 @@
+<div [ngClass]="wrapperClass()" (click)="onClick()">
+    <div class="rank ">{{rank}}</div>
+    <ng-container [ngSwitch]="suit">
+        <ng-container *ngSwitchCase="'s'">
+            <div class="suit black">&spades;</div>
+        </ng-container>
+        <ng-container *ngSwitchCase="'c'">
+            <div class="suit black">&clubs;</div>
+        </ng-container>
+        <ng-container *ngSwitchCase="'d'">
+            <div class="suit red">&diams;</div>
+        </ng-container>
+        <ng-container *ngSwitchCase="'h'">
+            <div class="suit red ">&hearts;</div>
+        </ng-container>
+    </ng-container>
+</div>

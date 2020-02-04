@@ -1,8 +1,8 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { Hand } from './helpers/hand';
-import { rawHandRankings } from './helpers/consts';
 import { HandValue } from './helpers/hand-value';
 import { Row } from './helpers/row';
+import { AppService } from './services/app.service';
 
 @Component({
   selector: 'app-root',
@@ -11,23 +11,12 @@ import { Row } from './helpers/row';
 })
 export class AppComponent {
 
-  constructor() {
-    if (this.rawHandRanking.length != this.rawLength) {
-      throw new Error('Wrong raw collection length');
-    }
-    this.rawHandRanking.forEach(x => {
-      const i = this.rawHandRanking.indexOf(x);
-      this.rawHandRanking[i] = x.trim();
-    })
-    this.updateRows();
+  constructor(public appService: AppService) {
+    this.appService.updateRows();
   }
 
   @ViewChild('file', { static: false }) file;
-  rawLength = 169;
-  rows: Row[] = [];
-  rawHandRanking: string[] = rawHandRankings[0].value.split(','); // 169 entries
   fileContent: any;
-  playedHands: string[];
 
   validate(s: string): boolean {
     let ok: boolean = /^[tjqkaTJQKA2-9]{1}[scdhSCDH]{1}[tjqkaTJQKA2-9]{1}[scdhSCDH]{1}/.test(s);
@@ -72,92 +61,29 @@ export class AppComponent {
         }
       }
 
-      this.playedHands = lines;
-      this.updateRows();
+      this.appService.playedHands = lines;
+      this.appService.updateRows();
     })
   }
 
-  getRawHands(start: number, length: number): string[] {
-    let result = [];
-    for (let i = start; i < start + length; i++) {
-      result.push(this.rawHandRanking[i]);
-    }
-    return result;
-  }
-
-  updateRows(): void {
-    let p: number = 100;
-    let result = [];
-    for (let i = 0; i < 10; i++) {
-      const row: Row = new Row();
-      row.success = p;
-      let length: number = i < 9 ? 17 : 16;
-      let start = i * 17;
-      row.hands = this.getRawHands(start, length);
-      row.expected = length / this.rawLength * (this.playedHands ? this.playedHands.length : 0);
-      row.fact = 0;
-      result.push(row);
-      p = p == 20 ? -20 : p - 20;
-    }
-
-    if (this.playedHands) {
-      this.playedHands.forEach(x => {
-        const raw: string = this.hand2raw(x, false);
-        const rawR: string = this.hand2raw(x, true);
-        let index = -1;
-        let row: Row;
-        for (let i = 0; i < 10; i++) {
-          row = result[i];
-          if (row.hands.find(x => x == raw || x == rawR)) {
-            index = i;
-            break;
-          }
-        }
-
-        if (index == -1) {
-          throw new Error(`Played hand ${raw} not found`)
-        }
-
-        row.fact++;
-      })
-    }
-
-    this.rows = result;
-  }
-
-  hand2raw(hand: string, reverted: boolean): string {
-
-    const fi: number = reverted ? 2 : 0;
-    const si: number = reverted ? 0 : 2;
-
-    const f: string = hand.substr(fi, 1).toUpperCase();
-    const s: string = hand.substr(si, 1).toUpperCase();
-    let result: string = f + s;
-    if (f == s) {
-      return result;
-    }
-    const suited: boolean = hand.substr(1, 1).toUpperCase() == hand.substr(3, 1).toUpperCase();
-    result += suited ? 's' : 'o';
-    return result;
-  }
 
   get overallResult(): string {
     let v: number = 0;
-    this.rows.forEach(x => {
+    this.appService.rows.forEach(x => {
       v += x.fact * x.success
     })
 
-    if (!this.playedHands) {
+    if (!this.appService.playedHands) {
       return "";
     }
 
-    v = v / this.playedHands.length;
+    v = v / this.appService.playedHands.length;
 
     return (v < 0 ? 'Failure ' : 'Success ') + v.toFixed(2) + '%';
   }
 
   get handsTotal(): string {
-    return this.playedHands ? this.playedHands.length.toString() : "no hands";
+    return this.appService.playedHands ? this.appService.playedHands.length.toString() : "no hands";
   }
 
 
@@ -179,13 +105,13 @@ export class AppComponent {
   }
 
   saveFile() {
-    if (!this.playedHands) {
+    if (!this.appService.playedHands) {
       return;
     }
 
     let s: string = "";
 
-    this.playedHands.forEach(x => {
+    this.appService.playedHands.forEach(x => {
       s += x + '\n'
     })
 
@@ -207,7 +133,6 @@ export class AppComponent {
     }
 
   }
-
 }
 
 
