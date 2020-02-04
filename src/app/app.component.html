@@ -1,4 +1,13 @@
-<div class="larger">Poker statistics</div>
+<input type="file" #file style="display: none" (change)="onFileOpen()" />
+<div class="larger">Check your luck</div>
+<br>
+<br>
+<button class="btn btn-primary" (click)="selectFile()">Select file</button>
+<span style="margin-left: 1em; font-size: larger">{{fileContent?.name}}</span>
+<br>
+<br>
+<button class="btn btn-secondary" (click)="saveFile()" [disabled]="!playedHands">Save file</button>
+<br>
 <br>
 <div class='wrapper'>
   <table >
@@ -7,8 +16,6 @@
     <th>Expected, hands</th>
     <th>Fact, hands</th>
     <th>Delta, hands</th>
-
-
         
     <tr *ngFor="let row of rows">
       <td>
