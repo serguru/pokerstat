@@ -8,6 +8,7 @@ th div {
 
 .larger {
     font-size: larger;
+    height: 2em;
 }
 
 th, td {
@@ -22,3 +23,56 @@ th, td {
     border-radius: 10px;
     padding: 1em;
 }
+
+
+
+@media only screen and (max-width: 500px) {
+    .hide-hands {
+        display: none;
+    }
+}
+
+.col {
+    flex: 1;
+}
+
+.s100 {
+    color: #009900;
+}
+
+.s80 {
+    color: #00e600;
+}
+
+.s60 {
+    color: #33ff33;
+}
+
+.s40 {
+    color: #80ff80;
+}
+
+.s20 {
+    color: #e60000;
+}
+
+.f100 {
+    color: #ff0000;
+}
+
+.f80 {
+    color: #ff1a1a;
+}
+
+.f60 {
+    color: #ff3333;
+}
+
+.f40 {
+    color: #ff6666;
+}
+
+.f20 {
+    color: #ff9999;
+}
+

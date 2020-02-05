@@ -22,4 +22,5 @@ export class CardPadComponent implements OnInit {
     return ranks.reverse();
   }
 
+
 }

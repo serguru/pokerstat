@@ -1,4 +1,4 @@
-AC4D   
+AC4D
 8S9H
 4D7H
 6S9C
@@ -47,3 +47,6 @@ Ac5s
 2h7h
 Th4h
 Jd7s
+KdAh
+3d3h
+5d5h

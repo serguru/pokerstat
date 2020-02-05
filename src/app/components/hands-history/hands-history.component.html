@@ -1,3 +1,5 @@
-<div *ngFor="let hand of appService.playedHands">
-    {{hand}}
+<div style="padding-left: 2em; padding-right: 2em; height: 560px; overflow: auto">
+    <div *ngFor="let hand of appService.playedHandsReverted">
+        {{hand}}
+    </div>
 </div>

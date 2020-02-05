@@ -2,13 +2,14 @@ import { Injectable } from '@angular/core';
 import { ThumbComponent } from '../components/thumb/thumb.component';
 import { Row } from '../helpers/row';
 import { rawHandRankings } from '../helpers/consts';
+import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AppService {
 
-  constructor() { 
+  constructor() {
     if (this.rawHandRanking.length != this.rawLength) {
       throw new Error('Wrong raw collection length');
     }
@@ -17,35 +18,47 @@ export class AppService {
   rows: Row[] = [];
   rawLength = 169;
 
-  rawHandRanking: string[] = 
+  rawHandRanking: string[] =
     rawHandRankings[0].value
-    .split(',') // 169 entries
-    .map(x => {
-      return x.trim();
-    })
+      .split(',') // 169 entries
+      .map(x => {
+        return x.trim();
+      })
 
-    playedHands: string[] = [];
+  playedHands: string[] = [];
 
 
   selected: ThumbComponent[] = [];
 
   toggleThumb(thumb: ThumbComponent) {
+
     const index: number = this.selected.indexOf(thumb);
+
     if (index < 0) {
       this.selected.push(thumb);
     } else {
       this.selected.splice(index, 1);
     }
 
+
     if (this.selected.length < 2) {
       return;
     }
 
-    const hand: string = `${this.selected[0].rank}${this.selected[0].suit}${this.selected[1].rank}${this.selected[1].suit}`
-    this.playedHands.unshift(hand);
-    this.selected.length = 0;
+    if (this.selected.length == 2) {
+      const hand: string = `${this.selected[0].rank}${this.selected[0].suit}${this.selected[1].rank}${this.selected[1].suit}`
+      this.lastHand = hand;
+      this.playedHands.push(hand);
+    }
+
+    if (this.selected.length > 2) {
+      this.selected.splice(0, 2);
+    }
+
     this.updateRows();
   }
+
+  lastHand: string;
 
   getRawHands(start: number, length: number): string[] {
     let result = [];
@@ -69,6 +82,10 @@ export class AppService {
     const suited: boolean = hand.substr(1, 1).toUpperCase() == hand.substr(3, 1).toUpperCase();
     result += suited ? 's' : 'o';
     return result;
+  }
+
+  get playedHandsReverted(): string[] {
+    return this.playedHands ? this.playedHands.reverse() : [];
   }
 
   updateRows(): void {
@@ -109,6 +126,152 @@ export class AppService {
     }
 
     this.rows = result;
+  }
+
+  rowByHand(hand: string): Row {
+    if (!this.rows) {
+      return null;
+    }
+
+    const raw: string = this.hand2raw(hand, false);
+    const rawR: string = this.hand2raw(hand, true);
+
+    let result: Row = this.rows.find(x => x.hands.find(y => y == raw)) ||
+      this.rows.find(x => x.hands.find(y => y == rawR));
+    
+    if (!result) {
+      throw new Error(`Played hand ${raw} not found`)
+    }
+
+    return result;
+
+  }
+
+  fileName: string;
+
+  validate(s: string): boolean {
+    let ok: boolean = /^[tjqkaTJQKA2-9]{1}[scdhSCDH]{1}[tjqkaTJQKA2-9]{1}[scdhSCDH]{1}/.test(s);
+    if (!ok) {
+      return false;
+    }
+
+    if (s.substr(0, 1).toLowerCase() != s.substr(2, 1).toLowerCase()) {
+      return true;
+    }
+
+    return s.substr(2, 1).toLowerCase() != s.substr(4, 1).toLowerCase();
+  }
+
+  processFile(fileContent: any): void {
+
+    let lines: string[];
+    if (!fileContent.text) {
+      throw new Error('Wrong hands history file format');
+    }
+
+    fileContent.text().then((s: string) => {
+      try {
+        lines = s.split('\n').map(x => !x ? x : x.trim());
+      }
+      catch
+      {
+        throw new Error('Cannot read hands history');
+      }
+
+      if (lines.length == 0) {
+        throw new Error('No hands in this file');
+      }
+
+      for (let i = 0; i < lines.length; i++) {
+        const hand: string = lines[i];
+        if (!this.validate(hand)) {
+          throw new Error(`A hand #${i + 1} "${hand}" is invalid`)
+        }
+      }
+
+      this.fileName = fileContent.name;
+      this.playedHands = lines;
+      this.updateRows();
+    })
+  }
+
+  hands2blob(): Blob {
+    let s: string = "";
+
+    // for (let i=0; i < this.playedHands.length; i++) {
+
+    // }
+
+    this.playedHands.forEach((x: string, i: number) => {
+      s += x + (i == this.playedHands.length - 1 ? '' : '\n');
+    })
+
+    const file = new Blob([s], { type: "text/plain" });
+
+    return file;
+  }
+
+  saveFile() {
+    if (!this.playedHands) {
+      return;
+    }
+
+    if (this.playedHands.length == 0) {
+      throw new Error("No hands - nothing to save");
+    }
+
+    var file = this.hands2blob();
+
+    if (window.navigator.msSaveOrOpenBlob) // IE10+
+      window.navigator.msSaveOrOpenBlob(file, this.fileName || 'hands.txt');
+    else { // Others
+      const a = document.createElement("a"),
+        url = URL.createObjectURL(file);
+      a.href = url;
+      a.download = this.fileName || 'hands.txt';
+      document.body.appendChild(a);
+      a.click();
+      setTimeout(function () {
+        document.body.removeChild(a);
+        window.URL.revokeObjectURL(url);
+      }, 0);
+    }
+
+  }
+
+  get tabloStr(): string {
+    
+    if (!this.lastHand) {
+      return '...'
+    }
+
+    const row = this.rowByHand(this.lastHand);
+
+    if (!row) {
+      return '...';
+    }
+
+    return this.lastHand + ' ' + row.success + '%';
+  }
+
+  public get tabloClass(): any {
+
+    const row: Row = this.lastHand ? this.rowByHand(this.lastHand) : undefined;
+    const success: number = row ? row.success : undefined;
+
+    return {
+      'larger': true,
+      's100': success == 100,
+      's80': success == 80,
+      's60': success == 60,
+      's40': success == 40,
+      's20': success == 20,
+      'f20': success == -20,
+      'f40': success == -40,
+      'f60': success == -60,
+      'f80': success == -80,
+      'f100': success == -100,
+    };
   }
 
 

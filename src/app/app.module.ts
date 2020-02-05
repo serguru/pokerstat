@@ -6,6 +6,12 @@ import { AppComponent } from './app.component';
 import { ThumbComponent } from './components/thumb/thumb.component';
 import { CardPadComponent } from './components/card-pad/card-pad.component';
 import { HandsHistoryComponent } from './components/hands-history/hands-history.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import {MatMenuModule} from '@angular/material/menu';
+import {MatIconModule} from '@angular/material/icon';
+import {MatButtonModule} from '@angular/material/button';
+import {MatButtonToggleModule} from '@angular/material/button-toggle';
+import {MatToolbarModule} from '@angular/material/toolbar';
 
 @NgModule({
   declarations: [
@@ -13,10 +19,17 @@ import { HandsHistoryComponent } from './components/hands-history/hands-history.
     ReduceFloatPipe,
     ThumbComponent,
     CardPadComponent,
-    HandsHistoryComponent
+    HandsHistoryComponent,
+
   ],
   imports: [
-    BrowserModule
+    BrowserModule,
+    BrowserAnimationsModule,
+    MatMenuModule,
+    MatIconModule,
+    MatButtonModule,
+    MatButtonToggleModule,
+    MatToolbarModule
   ],
   providers: [],
   bootstrap: [AppComponent]
