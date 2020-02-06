@@ -17,10 +17,6 @@ export class HistoryItemComponent implements OnInit {
   hand: string;
 
   ngOnInit() {
-    // if (this.appService.playedHands && this.appService.playedHands.length > 0 &&
-    //   this.handIndex >= 0 && this.handIndex < this.appService.playedHands.length) {
-    //   this.hand = this.appService.playedHands[this.handIndex].toUpperCase();
-    // }
       this.hand = this.appService.playedHands[this.handIndex].toUpperCase();
   }
 
@@ -36,6 +32,7 @@ export class HistoryItemComponent implements OnInit {
     }
     this.appService.playedHands.splice(this.index, 1);
     this.appService.handsToLocalStorage();
+    this.appService.updateRows();
 
   }
 }
