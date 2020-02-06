@@ -261,16 +261,8 @@ export class AppService {
 
     return {
       'larger': true,
-      's100': success == 100,
-      's80': success == 80,
-      's60': success == 60,
-      's40': success == 40,
-      's20': success == 20,
-      'f20': success == -20,
-      'f40': success == -40,
-      'f60': success == -60,
-      'f80': success == -80,
-      'f100': success == -100,
+      'success': success >= 0,
+      'failure': success < 0
     };
   }
 

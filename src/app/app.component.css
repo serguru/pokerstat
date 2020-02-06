@@ -36,43 +36,12 @@ th, td {
     flex: 1;
 }
 
-.s100 {
+.success {
     color: #009900;
 }
 
-.s80 {
-    color: #00e600;
-}
 
-.s60 {
-    color: #33ff33;
-}
-
-.s40 {
-    color: #80ff80;
-}
-
-.s20 {
-    color: #e60000;
-}
-
-.f100 {
+.failure {
     color: #ff0000;
-}
-
-.f80 {
-    color: #ff1a1a;
-}
-
-.f60 {
-    color: #ff3333;
-}
-
-.f40 {
-    color: #ff6666;
-}
-
-.f20 {
-    color: #ff9999;
 }
 
