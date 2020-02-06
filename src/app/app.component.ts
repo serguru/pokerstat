@@ -3,6 +3,8 @@ import { Hand } from './helpers/hand';
 import { HandValue } from './helpers/hand-value';
 import { Row } from './helpers/row';
 import { AppService } from './services/app.service';
+import { MatDialog } from '@angular/material/dialog';
+import { ResetDialogComponent } from './components/reset-dialog/reset-dialog.component';
 
 @Component({
   selector: 'app-root',
@@ -11,7 +13,10 @@ import { AppService } from './services/app.service';
 })
 export class AppComponent implements OnInit {
 
-  constructor(public appService: AppService) {
+  constructor(
+    public appService: AppService,
+    public dialog: MatDialog
+    ) {
     this.appService.updateRows();
   }
 
@@ -21,7 +26,20 @@ export class AppComponent implements OnInit {
     this.appService.handsFromLocalStorage();
   }
 
+  openDialog(): void {
+    const dialogRef = this.dialog.open(ResetDialogComponent, {
+      width: '250px',
+      data: {name: '', animal: ''}
+    });
 
+    dialogRef.afterClosed().subscribe(result => {
+    //  console.log('The dialog was closed');
+      if (!result) {
+        return;
+      }
+      this.appService.resetHands();
+    });
+  }
 
 
   
@@ -37,7 +55,7 @@ export class AppComponent implements OnInit {
   }
 
   onResetHandsClick(): void {
-    this.appService.resetHands();
+    this.openDialog();
   }
 
   onFileOpen() {

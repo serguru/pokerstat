@@ -1,7 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { ReduceFloatPipe } from './helpers/pipes'
-
 import { AppComponent } from './app.component';
 import { ThumbComponent } from './components/thumb/thumb.component';
 import { CardPadComponent } from './components/card-pad/card-pad.component';
@@ -19,6 +18,8 @@ import {MatCheckboxModule} from '@angular/material/checkbox';
 import { FormsModule } from '@angular/forms';
 import { TabloComponent } from './components/tablo/tablo.component';
 import { SuccessGroupsComponent } from './components/success-groups/success-groups.component';
+import {MatDialogModule} from '@angular/material/dialog';
+import { ResetDialogComponent } from './components/reset-dialog/reset-dialog.component';
 
 @NgModule({
   declarations: [
@@ -30,6 +31,7 @@ import { SuccessGroupsComponent } from './components/success-groups/success-grou
     HistoryItemComponent,
     TabloComponent,
     SuccessGroupsComponent,
+    ResetDialogComponent,
 
   ],
   imports: [
@@ -42,9 +44,13 @@ import { SuccessGroupsComponent } from './components/success-groups/success-grou
     MatToolbarModule,
     MatCheckboxModule,
     FormsModule,
+    MatDialogModule,
     ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production })
   ],
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+  entryComponents: [
+    ResetDialogComponent
+  ]
 })
 export class AppModule { }
