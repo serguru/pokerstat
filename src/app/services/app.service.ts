@@ -30,7 +30,20 @@ export class AppService {
 
   selected: ThumbComponent[] = [];
 
-  toggleThumb(thumb: ThumbComponent) {
+  lastHandFromSelected() {
+
+    if (!this.selected || this.selected.length == 0) {
+      return undefined;
+    }
+
+    if (this.selected.length == 1) {
+      return `${this.selected[0].rank}${this.selected[0].suit}`;
+    }
+
+    return `${this.selected[0].rank}${this.selected[0].suit}${this.selected[1].rank}${this.selected[1].suit}`;
+  }
+
+  addHandByThumb(thumb: ThumbComponent) {
 
     const index: number = this.selected.indexOf(thumb);
 
@@ -38,24 +51,21 @@ export class AppService {
       this.selected.push(thumb);
     } else {
       this.selected.splice(index, 1);
-    }
-
-
-    if (this.selected.length < 2) {
+      this.lastHand = this.lastHandFromSelected();
       return;
     }
 
-    if (this.selected.length == 2) {
-      const hand: string = `${this.selected[0].rank}${this.selected[0].suit}${this.selected[1].rank}${this.selected[1].suit}`
-      this.lastHand = hand;
-      this.playedHands.push(hand);
+    if (this.selected.length == 1) {
+      this.lastHand = this.lastHandFromSelected();
+      return;
     }
 
-    if (this.selected.length > 2) {
-      this.selected.splice(0, 2);
-    }
-
+    const hand: string = this.lastHandFromSelected();
+    this.lastHand = hand;
+    this.playedHands.push(hand);
     this.updateRows();
+
+    this.selected.length = 0;
   }
 
   lastHand: string;
@@ -138,7 +148,7 @@ export class AppService {
 
     let result: Row = this.rows.find(x => x.hands.find(y => y == raw)) ||
       this.rows.find(x => x.hands.find(y => y == rawR));
-    
+
     if (!result) {
       throw new Error(`Played hand ${raw} not found`)
     }
@@ -240,15 +250,20 @@ export class AppService {
   }
 
   get tabloStr(): string {
-    
+
     if (!this.lastHand) {
       return '...'
+    }
+
+
+    if (this.lastHand.length == 2) {
+      return this.lastHand + '...';
     }
 
     const row = this.rowByHand(this.lastHand);
 
     if (!row) {
-      return '...';
+      throw new Error("Row not found")
     }
 
     return this.lastHand + ' ' + row.success + '%';
@@ -256,7 +271,7 @@ export class AppService {
 
   public get tabloClass(): any {
 
-    const row: Row = this.lastHand ? this.rowByHand(this.lastHand) : undefined;
+    const row: Row = this.lastHand && this.lastHand.length == 4 ? this.rowByHand(this.lastHand) : undefined;
     const success: number = row ? row.success : undefined;
 
     return {
@@ -265,6 +280,23 @@ export class AppService {
       'failure': success < 0
     };
   }
+
+
+  get success(): number {
+    if (!this.rows || this.rows.length == 0 || !this.playedHands || this.playedHands.length == 0) {
+      return undefined;
+    }
+
+    let v: number = 0;
+    this.rows.forEach(x => {
+      v += x.fact * x.success
+    })
+
+    v = v / this.playedHands.length;
+
+    return v;
+  }
+
 
 
 }

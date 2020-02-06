@@ -12,6 +12,7 @@ import {MatIconModule} from '@angular/material/icon';
 import {MatButtonModule} from '@angular/material/button';
 import {MatButtonToggleModule} from '@angular/material/button-toggle';
 import {MatToolbarModule} from '@angular/material/toolbar';
+import { HistoryItemComponent } from './components/history-item/history-item.component';
 
 @NgModule({
   declarations: [
@@ -20,6 +21,7 @@ import {MatToolbarModule} from '@angular/material/toolbar';
     ThumbComponent,
     CardPadComponent,
     HandsHistoryComponent,
+    HistoryItemComponent,
 
   ],
   imports: [

@@ -1,0 +1,16 @@
+<div class="wrapper" title='Click to remove' (click)="onClick()">
+    <span>{{hand[0]}}</span>
+    <ng-container [ngSwitch]="hand[1]">
+        <span *ngSwitchCase="'S'">&spades;</span>
+        <span *ngSwitchCase="'C'">&clubs;</span>
+        <span class="red" *ngSwitchCase="'D'">&diams;</span>
+        <span class="red" *ngSwitchCase="'H'">&hearts;</span>
+    </ng-container>
+    <span>{{hand[2]}}</span>
+    <ng-container [ngSwitch]="hand[3]">
+        <span *ngSwitchCase="'S'">&spades;</span>
+        <span *ngSwitchCase="'C'">&clubs;</span>
+        <span class="red" *ngSwitchCase="'D'">&diams;</span>
+        <span class="red" *ngSwitchCase="'H'">&hearts;</span>
+    </ng-container>
+</div>

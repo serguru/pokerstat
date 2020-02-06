@@ -25,8 +25,12 @@ export class ThumbComponent implements OnInit {
   }
 
   onClick() {
-    this.appService.toggleThumb(this);
+    this.appService.addHandByThumb(this);
   }
 
+
+  get handStr(): string {
+    return this.rank + this.suit;
+  }
 
 }

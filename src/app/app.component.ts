@@ -19,23 +19,27 @@ export class AppComponent {
 
 
   get overallResult(): string {
-    let v: number = 0;
-    this.appService.rows.forEach(x => {
-      v += x.fact * x.success
-    })
 
-    if (!this.appService.playedHands || this.appService.playedHands.length == 0) {
-      return "Success: unknown";
+    const s: number = this.appService.success;
+
+    if (s == undefined) {
+      return "unknown";
     }
 
-    v = v / this.appService.playedHands.length;
+    return s.toFixed(2) + '%';
+  }
 
-    return (v < 0 ? 'Failure: ' : 'Success: ') + v.toFixed(2) + '%';
+  get sf(): string {
+    const s: number = this.appService.success;
+    return s < 0 ? "Failure" : "Success"
   }
 
   get handsTotal(): string {
     return this.appService.playedHands ? this.appService.playedHands.length.toString() : "no hands";
   }
+
+
+  
 
   onFileOpen() {
     if (!this.file.nativeElement.files || this.file.nativeElement.files.length == 0) {

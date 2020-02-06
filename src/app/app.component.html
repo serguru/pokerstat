@@ -1,8 +1,8 @@
 <mat-toolbar>
   <!-- <span>Check your luck</span> -->
   <!-- <button mat-button [matMenuTriggerFor]="menu">Menu</button> -->
-  <button mat-button (click)="selectFile()">Open file</button>
-  <button mat-button [disabled]="!appService.playedHands" (click)="onSaveFileClick()">Save file</button>
+  <button mat-button (click)="selectFile()">Load from file</button>
+  <button mat-button [disabled]="!appService.playedHands" (click)="onSaveFileClick()">Save to file</button>
 </mat-toolbar>
 
 <!-- <mat-menu #menu="matMenu">
@@ -51,9 +51,17 @@
 </div>
 <br>
 
-<div class="larger">Hands total: {{handsTotal}}</div>
-<div class="larger">{{overallResult}}</div>
-<div [ngClass]="appService.tabloClass">Last hand: {{appService.tabloStr}}</div>
+<table>
+  <th class="larger">Hands Total</th>
+  <th class="larger">{{sf}}</th>
+  <th class="larger">Last Hand</th>
+  <tr>
+    <td class="larger">{{handsTotal}}</td>
+    <td [ngClass]="appService.tabloClass">{{overallResult}}</td>
+    <td [ngClass]="appService.tabloClass">{{appService.tabloStr}}</td>
+  </tr>
+</table>
+
 
 <br>
 

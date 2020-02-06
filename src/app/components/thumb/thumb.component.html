@@ -1,6 +1,6 @@
 <div [ngClass]="wrapperClass()" (click)="onClick()">
     <div class="rank ">{{rank}}</div>
-    <ng-container [ngSwitch]="suit">
+    <ng-container [ngSwitch]="suit.toLowerCase()">
         <ng-container *ngSwitchCase="'s'">
             <div class="suit black">&spades;</div>
         </ng-container>
