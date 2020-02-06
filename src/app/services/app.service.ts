@@ -63,6 +63,7 @@ export class AppService {
     const hand: string = this.lastHandFromSelected();
     this.lastHand = hand;
     this.playedHands.push(hand);
+    this.handsToLocalStorage();
     this.updateRows();
 
     this.selected.length = 0;
@@ -172,31 +173,75 @@ export class AppService {
     return s.substr(2, 1).toLowerCase() != s.substr(4, 1).toLowerCase();
   }
 
+  handsKey = "hands";
+
+  handsToLocalStorage() {
+    if (!this.playedHands || this.playedHands.length == 0) {
+      localStorage.removeItem(this.handsKey);
+      return;
+    }
+    localStorage.setItem(this.handsKey, this.hands2string())
+  }
+
+  handsFromLocalStorage() {
+    const s: string = localStorage.getItem(this.handsKey);
+    if (!s) {
+      return;
+    }
+
+    const lines: string[] = this.string2lines(s);
+
+    const error: string = this.validateLines(lines);
+
+    if (error) {
+      throw new Error(error);
+    }
+
+    this.playedHands = lines;
+  }
+
+  validateLines(lines: string[]): string {
+    for (let i = 0; i < lines.length; i++) {
+      const hand: string = lines[i];
+      if (!this.validate(hand)) {
+        return `A hand #${i + 1} "${hand}" is invalid`;
+      }
+    }
+    return undefined;
+  }
+
+  string2lines(s: string): string[] {
+    let lines: string[];
+    try {
+      lines = s.split('\n').map(x => !x ? x : x.trim());
+    }
+    catch
+    {
+      throw new Error('Cannot read hands history');
+    }
+
+    return lines;
+  }
+
+
   processFile(fileContent: any): void {
 
-    let lines: string[];
     if (!fileContent.text) {
       throw new Error('Wrong hands history file format');
     }
 
     fileContent.text().then((s: string) => {
-      try {
-        lines = s.split('\n').map(x => !x ? x : x.trim());
-      }
-      catch
-      {
-        throw new Error('Cannot read hands history');
-      }
+
+      const lines: string[] = this.string2lines(s);
 
       if (lines.length == 0) {
         throw new Error('No hands in this file');
       }
 
-      for (let i = 0; i < lines.length; i++) {
-        const hand: string = lines[i];
-        if (!this.validate(hand)) {
-          throw new Error(`A hand #${i + 1} "${hand}" is invalid`)
-        }
+      const error: string = this.validateLines(lines);
+
+      if (error) {
+        throw new Error(error);
       }
 
       this.fileName = fileContent.name;
@@ -205,16 +250,18 @@ export class AppService {
     })
   }
 
-  hands2blob(): Blob {
+
+  hands2string(): string {
     let s: string = "";
-
-    // for (let i=0; i < this.playedHands.length; i++) {
-
-    // }
-
     this.playedHands.forEach((x: string, i: number) => {
       s += x + (i == this.playedHands.length - 1 ? '' : '\n');
     })
+    return s;
+  }
+
+  hands2blob(): Blob {
+
+    const s = this.hands2string();
 
     const file = new Blob([s], { type: "text/plain" });
 
@@ -281,7 +328,6 @@ export class AppService {
     };
   }
 
-
   get success(): number {
     if (!this.rows || this.rows.length == 0 || !this.playedHands || this.playedHands.length == 0) {
       return undefined;
@@ -297,6 +343,11 @@ export class AppService {
     return v;
   }
 
-
-
+  resetHands(): void {
+    if (!this.playedHands) {
+      return;
+    }
+    this.playedHands.length = 0;
+    localStorage.removeItem(this.handsKey);
+  }
 }

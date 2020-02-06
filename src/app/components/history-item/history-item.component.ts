@@ -35,5 +35,7 @@ export class HistoryItemComponent implements OnInit {
       return;
     }
     this.appService.playedHands.splice(this.index, 1);
+    this.appService.handsToLocalStorage();
+
   }
 }

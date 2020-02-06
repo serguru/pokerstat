@@ -3,6 +3,7 @@
   <!-- <button mat-button [matMenuTriggerFor]="menu">Menu</button> -->
   <button mat-button (click)="selectFile()">Load from file</button>
   <button mat-button [disabled]="!appService.playedHands" (click)="onSaveFileClick()">Save to file</button>
+  <button mat-button [disabled]="!appService.playedHands" (click)="onResetHandsClick()">Reset hands</button>
 </mat-toolbar>
 
 <!-- <mat-menu #menu="matMenu">

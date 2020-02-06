@@ -9,7 +9,7 @@ import { AppService } from './services/app.service';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
 
   constructor(public appService: AppService) {
     this.appService.updateRows();
@@ -17,6 +17,9 @@ export class AppComponent {
 
   @ViewChild('file', { static: false }) file;
 
+  ngOnInit(): void {
+    this.appService.handsFromLocalStorage();
+  }
 
   get overallResult(): string {
 
@@ -38,8 +41,9 @@ export class AppComponent {
     return this.appService.playedHands ? this.appService.playedHands.length.toString() : "no hands";
   }
 
-
-  
+  onResetHandsClick(): void {
+    this.appService.resetHands();
+  }
 
   onFileOpen() {
     if (!this.file.nativeElement.files || this.file.nativeElement.files.length == 0) {
