@@ -17,6 +17,7 @@ export class AppComponent implements OnInit {
     public appService: AppService,
     public dialog: MatDialog
     ) {
+      this.appService.handsFromLocalStorage();
     this.appService.updateRows();
   }
 
