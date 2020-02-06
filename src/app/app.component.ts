@@ -21,24 +21,19 @@ export class AppComponent implements OnInit {
     this.appService.handsFromLocalStorage();
   }
 
-  get overallResult(): string {
 
-    const s: number = this.appService.success;
 
-    if (s == undefined) {
-      return "unknown";
+
+  
+  get successGroupsVisible(): boolean {
+    return localStorage.getItem('successVisible') == 'true';
+  }
+
+  set successGroupsVisible(value: boolean) {
+    if (this.successGroupsVisible == value) {
+      return;
     }
-
-    return s.toFixed(2) + '%';
-  }
-
-  get sf(): string {
-    const s: number = this.appService.success;
-    return s < 0 ? "Failure" : "Success"
-  }
-
-  get handsTotal(): string {
-    return this.appService.playedHands ? this.appService.playedHands.length.toString() : "no hands";
+    localStorage.setItem('successVisible', value ? 'true' : 'false');
   }
 
   onResetHandsClick(): void {

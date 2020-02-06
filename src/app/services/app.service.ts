@@ -296,15 +296,22 @@ export class AppService {
 
   }
 
-  get tabloStr(): string {
+  get tabloStrObj(): any {
 
-    if (!this.lastHand) {
-      return '...'
+    const result = {
+      hand: undefined,
+      success: undefined,
+      type: 1
     }
 
+    if (!this.lastHand) {
+      return result;
+    }
 
     if (this.lastHand.length == 2) {
-      return this.lastHand + '...';
+      result.hand = this.lastHand.toUpperCase();
+      result.type = 2;
+      return result;
     }
 
     const row = this.rowByHand(this.lastHand);
@@ -313,7 +320,11 @@ export class AppService {
       throw new Error("Row not found")
     }
 
-    return this.lastHand + ' ' + row.success + '%';
+    result.type = 3;
+    result.hand = this.lastHand.toUpperCase();
+    result.success = " " + row.success + "%"; 
+
+    return  result;
   }
 
   public get tabloClass(): any {

@@ -1,0 +1,28 @@
+<div class="wrapper">
+    <h4>Success Groups</h4>
+    <table>
+        <th>Success, %</th>
+        <th class="hide-hands">Hands</th>
+        <th>Expected, hands</th>
+        <th>Fact, hands</th>
+        <th>Delta, hands</th>
+
+        <tr *ngFor="let row of appService.rows">
+            <td>
+                <div>{{row.success}}</div>
+            </td>
+            <td class="hide-hands">
+                {{row.hands.toString()}}
+            </td>
+            <td>
+                <div>{{row.expected | reduceFloat:2}}</div>
+            </td>
+            <td>
+                <div>{{row.fact | reduceFloat:0}}</div>
+            </td>
+            <td>
+                <div>{{row.delta | reduceFloat:2}}</div>
+            </td>
+        </tr>
+    </table>
+</div>

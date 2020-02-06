@@ -1,72 +1,22 @@
-<mat-toolbar>
-  <!-- <span>Check your luck</span> -->
-  <!-- <button mat-button [matMenuTriggerFor]="menu">Menu</button> -->
+<input type="file" #file style="display: none" (change)="onFileOpen()" />
+
+<div style="display: flex; flex-wrap: wrap; align-items: center;">
   <button mat-button (click)="selectFile()">Load from file</button>
   <button mat-button [disabled]="!appService.playedHands" (click)="onSaveFileClick()">Save to file</button>
   <button mat-button [disabled]="!appService.playedHands" (click)="onResetHandsClick()">Reset hands</button>
-</mat-toolbar>
-
-<!-- <mat-menu #menu="matMenu">
-  <button mat-menu-item>Item 1</button>
-  <button mat-menu-item>Item 2</button>
-</mat-menu> -->
-
-<input type="file" #file style="display: none" (change)="onFileOpen()" />
-<!-- <div class="larger">Check your luck</div>
-<br>
-<button class="btn btn-primary" (click)="selectFile()">Select file</button> -->
-<br>
-<span style="margin-left: 1em; font-size: larger">{{appService.fileName}}</span>
-<br>
-<!-- <br>
-<button class="btn btn-secondary" (click)="onSaveFileClick()" [disabled]="!appService.playedHands">Save file</button>
-<br>
-<br> -->
-
-<div class='wrapper'>
-  <table>
-    <th>Success, %</th>
-    <th class="hide-hands">Hands</th>
-    <th>Expected, hands</th>
-    <th>Fact, hands</th>
-    <th>Delta, hands</th>
-
-    <tr *ngFor="let row of appService.rows">
-      <td>
-        <div>{{row.success}}</div>
-      </td>
-      <td class="hide-hands">
-        {{row.hands.toString()}}
-      </td>
-      <td>
-        <div>{{row.expected | reduceFloat:2}}</div>
-      </td>
-      <td>
-        <div>{{row.fact | reduceFloat:0}}</div>
-      </td>
-      <td>
-        <div>{{row.delta | reduceFloat:2}}</div>
-      </td>
-    </tr>
-  </table>
+  <mat-checkbox [(ngModel)]="successGroupsVisible" 
+    style="font-weight: 500; padding-left: 16px">Show success groups</mat-checkbox>
 </div>
-<br>
 
-<table>
-  <th class="larger">Hands Total</th>
-  <th class="larger">{{sf}}</th>
-  <th class="larger">Last Hand</th>
-  <tr>
-    <td class="larger">{{handsTotal}}</td>
-    <td [ngClass]="appService.tabloClass">{{overallResult}}</td>
-    <td [ngClass]="appService.tabloClass">{{appService.tabloStr}}</td>
-  </tr>
-</table>
+<div style="display: flex; flex-wrap: wrap; align-items: center;">
+  <div>
+    <app-tablo></app-tablo>
+    <div style="display: flex; padding: 1em">
+      <app-card-pad></app-card-pad>
+      <app-hands-history></app-hands-history>
+    </div>
+  </div>
 
-
-<br>
-
-<div style="display: flex; padding: 1em">
-  <app-card-pad></app-card-pad>
-  <app-hands-history></app-hands-history>
+  <app-success-groups *ngIf="successGroupsVisible">
+  </app-success-groups>
 </div>

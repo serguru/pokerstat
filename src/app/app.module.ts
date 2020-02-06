@@ -13,6 +13,12 @@ import {MatButtonModule} from '@angular/material/button';
 import {MatButtonToggleModule} from '@angular/material/button-toggle';
 import {MatToolbarModule} from '@angular/material/toolbar';
 import { HistoryItemComponent } from './components/history-item/history-item.component';
+import { ServiceWorkerModule } from '@angular/service-worker';
+import { environment } from '../environments/environment';
+import {MatCheckboxModule} from '@angular/material/checkbox';
+import { FormsModule } from '@angular/forms';
+import { TabloComponent } from './components/tablo/tablo.component';
+import { SuccessGroupsComponent } from './components/success-groups/success-groups.component';
 
 @NgModule({
   declarations: [
@@ -22,6 +28,8 @@ import { HistoryItemComponent } from './components/history-item/history-item.com
     CardPadComponent,
     HandsHistoryComponent,
     HistoryItemComponent,
+    TabloComponent,
+    SuccessGroupsComponent,
 
   ],
   imports: [
@@ -31,7 +39,10 @@ import { HistoryItemComponent } from './components/history-item/history-item.com
     MatIconModule,
     MatButtonModule,
     MatButtonToggleModule,
-    MatToolbarModule
+    MatToolbarModule,
+    MatCheckboxModule,
+    FormsModule,
+    ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production })
   ],
   providers: [],
   bootstrap: [AppComponent]

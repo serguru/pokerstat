@@ -1,0 +1,23 @@
+.larger {
+    font-size: 20px;
+    font-weight: normal;
+    text-align: center;
+    padding: 5px;
+}
+
+.wrapper {
+    padding: 16px;
+}
+
+.success {
+    color: green;
+}
+
+
+.failure {
+    color: red;
+}
+
+.red {
+    color: red;
+}
