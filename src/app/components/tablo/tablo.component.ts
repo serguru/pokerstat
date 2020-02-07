@@ -31,8 +31,6 @@ export class TabloComponent implements OnInit {
     if (s == undefined) {
       return "unknown";
     }
-
     return s.toFixed(2) + '%';
   }
-
 }
