@@ -133,6 +133,8 @@ export class AppService {
     }
 
     this.rows = result;
+
+    this.success = this.getSuccess();
   }
 
   rowByHand(hand: string): Row {
@@ -335,7 +337,19 @@ export class AppService {
     };
   }
 
-  get success(): number {
+  public get tabloClassS(): any {
+
+
+    return {
+      'larger': true,
+      'success': this.success >= 0,
+      'failure': this.success < 0
+    };
+  }
+
+  success: number;
+
+  getSuccess(): number {
     if (!this.rows || this.rows.length == 0 || !this.playedHands || this.playedHands.length == 0) {
       return undefined;
     }

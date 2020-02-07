@@ -5,13 +5,11 @@
         <th class="larger" style="width: 150px">Last Hand</th>
         <tr>
             <td class="larger">{{handsTotal}}</td>
-            <td [ngClass]="appService.tabloClass">{{overallResult}}</td>
+            <td [ngClass]="appService.tabloClassS">{{overallResult}}</td>
             <td class="larger">
-
                 <div>
-
                     <ng-container [ngSwitch]="appService.tabloStrObj.type">
-                        <span *ngSwitchCase="1">...</span>    
+                        <span *ngSwitchCase="1">...</span>
                         <span *ngSwitchCase="2">
                             <!-- !!! if ng-container is put on a separate row - a space will appear !!! SC -->
                             {{appService.tabloStrObj.hand[0]}}<ng-container [ngSwitch]="appService.tabloStrObj.hand[1]">
@@ -20,26 +18,24 @@
                                 <span class="red" *ngSwitchCase="'D'">&diams;</span>
                                 <span class="red" *ngSwitchCase="'H'">&hearts;</span>
                             </ng-container>...
-                        </span>    
+                        </span>
                         <span *ngSwitchCase="3">
                             {{appService.tabloStrObj.hand[0]}}<ng-container [ngSwitch]="appService.tabloStrObj.hand[1]">
                                 <span *ngSwitchCase="'S'">&spades;</span>
                                 <span *ngSwitchCase="'C'">&clubs;</span>
                                 <span class="red" *ngSwitchCase="'D'">&diams;</span>
                                 <span class="red" *ngSwitchCase="'H'">&hearts;</span>
-                            </ng-container>{{appService.tabloStrObj.hand[2]}}<ng-container [ngSwitch]="appService.tabloStrObj.hand[3]">
+                            </ng-container>{{appService.tabloStrObj.hand[2]}}<ng-container
+                                [ngSwitch]="appService.tabloStrObj.hand[3]">
                                 <span *ngSwitchCase="'S'">&spades;</span>
                                 <span *ngSwitchCase="'C'">&clubs;</span>
                                 <span class="red" *ngSwitchCase="'D'">&diams;</span>
                                 <span class="red" *ngSwitchCase="'H'">&hearts;</span>
-                            </ng-container><span [ngClass]="appService.tabloClass">{{appService.tabloStrObj.success}}</span>
-                        </span>    
-
+                            </ng-container><span
+                                [ngClass]="appService.tabloClass">{{appService.tabloStrObj.success}}</span>
+                        </span>
                     </ng-container>
-                    
                 </div>
-
-
             </td>
         </tr>
     </table>
