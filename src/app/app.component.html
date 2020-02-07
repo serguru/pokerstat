@@ -1,9 +1,31 @@
-<input type="file" #file style="display: none" (change)="onFileOpen()" />
+<input type="file" #file style="display: none" (change)="onFileOpen()" multiple />
+
+
 
 <div style="display: flex; flex-wrap: wrap; align-items: center;">
-  <button mat-button (click)="selectFile()">Load from file</button>
+
+
+  <button mat-button [matMenuTriggerFor]="menu">Hands</button>
+  <mat-menu #menu="matMenu">
+    <button mat-menu-item (click)="selectFile()">
+      <mat-icon>get_app</mat-icon>
+      <span>Load from files</span>    
+    </button>
+    <button mat-menu-item [disabled]="!appService.playedHands" (click)="onSaveFileClick()">
+      <mat-icon>save</mat-icon>
+      <span>Save to file</span>    
+    </button>
+    <button mat-menu-item [disabled]="!appService.playedHands" (click)="onResetHandsClick()">
+      <mat-icon>delete_forever</mat-icon>
+      <span>Reset</span>    
+    </button>
+  </mat-menu>
+  
+
+
+  <!-- <button mat-button (click)="selectFile()">Load from file</button>
   <button mat-button [disabled]="!appService.playedHands" (click)="onSaveFileClick()">Save to file</button>
-  <button mat-button [disabled]="!appService.playedHands" (click)="onResetHandsClick()">Reset hands</button>
+  <button mat-button [disabled]="!appService.playedHands" (click)="onResetHandsClick()">Reset hands</button> -->
   <mat-checkbox [(ngModel)]="successGroupsVisible" 
     style="font-weight: 500; padding-left: 16px">Show success groups</mat-checkbox>
 </div>

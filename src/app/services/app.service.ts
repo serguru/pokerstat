@@ -158,8 +158,6 @@ export class AppService {
 
   }
 
-  fileName: string;
-
   validate(s: string): boolean {
     let ok: boolean = /^[tjqkaTJQKA2-9]{1}[scdhSCDH]{1}[tjqkaTJQKA2-9]{1}[scdhSCDH]{1}/.test(s);
     if (!ok) {
@@ -223,32 +221,46 @@ export class AppService {
     return lines;
   }
 
-
-  processFile(fileContent: any): void {
-
-    if (!fileContent.text) {
-      throw new Error('Wrong hands history file format');
+  processFiles(files: FileList): void {
+    if (!files || files.length == 0) {
+      throw new Error("No files to load hands from");
     }
 
-    fileContent.text().then((s: string) => {
 
-      const lines: string[] = this.string2lines(s);
-
-      if (lines.length == 0) {
-        throw new Error('No hands in this file');
+    for (let i = 0; i < files.length; i++) {
+      const fileContent: any = files[i];
+      if (!fileContent.text) {
+        throw new Error('Wrong hands history file format');
       }
 
-      const error: string = this.validateLines(lines);
+      fileContent.text().then((s: string) => {
 
-      if (error) {
-        throw new Error(error);
-      }
+        const lines: string[] = this.string2lines(s);
 
-      this.fileName = fileContent.name;
-      this.playedHands = lines;
-      this.updateRows();
-    })
+        if (lines.length == 0) {
+          throw new Error('No hands in this file');
+        }
+
+        const error: string = this.validateLines(lines);
+
+        if (error) {
+          throw new Error(error);
+        }
+
+        this.playedHands.push(...lines);
+
+      })
+    }
+
+
+    this.updateRows();
   }
+
+
+
+
+
+
 
 
   hands2string(): string {
@@ -280,12 +292,12 @@ export class AppService {
     var file = this.hands2blob();
 
     if (window.navigator.msSaveOrOpenBlob) // IE10+
-      window.navigator.msSaveOrOpenBlob(file, this.fileName || 'hands.txt');
+      window.navigator.msSaveOrOpenBlob(file, 'hands.txt');
     else { // Others
       const a = document.createElement("a"),
         url = URL.createObjectURL(file);
       a.href = url;
-      a.download = this.fileName || 'hands.txt';
+      a.download = 'hands.txt';
       document.body.appendChild(a);
       a.click();
       setTimeout(function () {
@@ -322,9 +334,9 @@ export class AppService {
 
     result.type = 3;
     result.hand = this.lastHand.toUpperCase();
-    result.success = " " + row.success + "%"; 
+    result.success = " " + row.success + "%";
 
-    return  result;
+    return result;
   }
 
   public get tabloClass(): any {
@@ -360,5 +372,6 @@ export class AppService {
     }
     this.playedHands.length = 0;
     localStorage.removeItem(this.handsKey);
+    this.updateRows();
   }
 }

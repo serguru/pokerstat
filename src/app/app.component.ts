@@ -60,9 +60,7 @@ export class AppComponent implements OnInit {
     if (!this.file.nativeElement.files || this.file.nativeElement.files.length == 0) {
       return;
     }
-    const fileContent = this.file.nativeElement.files[0];
-
-    this.appService.processFile(fileContent);
+    this.appService.processFiles(this.file.nativeElement.files);
   }
 
   selectFile() {
