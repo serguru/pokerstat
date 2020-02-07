@@ -95,10 +95,6 @@ export class AppService {
     return result;
   }
 
-  get playedHandsReverted(): string[] {
-    return this.playedHands ? this.playedHands.reverse() : [];
-  }
-
   updateRows(): void {
     let p: number = 100;
     let result = [];
@@ -137,6 +133,8 @@ export class AppService {
     }
 
     this.rows = result;
+
+    this.success = this.getSuccess();
   }
 
   rowByHand(hand: string): Row {
@@ -351,7 +349,19 @@ export class AppService {
     };
   }
 
-  get success(): number {
+  public get tabloClassS(): any {
+
+
+    return {
+      'larger': true,
+      'success': this.success >= 0,
+      'failure': this.success < 0
+    };
+  }
+
+  success: number;
+
+  getSuccess(): number {
     if (!this.rows || this.rows.length == 0 || !this.playedHands || this.playedHands.length == 0) {
       return undefined;
     }
@@ -374,4 +384,24 @@ export class AppService {
     localStorage.removeItem(this.handsKey);
     this.updateRows();
   }
+
+  char2SuitCode(c: string): string {
+    switch (c) {
+      case 's':
+      case 'S':
+        return String.fromCharCode(9824);
+      case 'c':
+      case 'C':
+        return String.fromCharCode(9827);
+      case 'd':
+      case 'D':
+        return String.fromCharCode(9830);
+      case 'h':
+      case 'H':
+        return String.fromCharCode(9829);
+      default:
+        return undefined;
+    }
+  }
+
 }

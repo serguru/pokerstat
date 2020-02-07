@@ -1,6 +1,25 @@
 export const suites: string[] = ['s', 'c', 'd', 'h'];
 
-export const ranks: string[] = ['2', '3', '4', '5', '6', '7', '8', '9', 'T', 'J', 'Q', 'K', 'A'];
+//export const ranks: string[] = ['2', '3', '4', '5', '6', '7', '8', '9', 'T', 'J', 'Q', 'K', 'A'];
+
+export const ranks: string[] = [
+    'A',
+    'K', 
+    'Q', 
+    'J', 
+    'T', 
+    '9', 
+    '8', 
+    '7', 
+    '6', 
+    '5', 
+    '4', 
+    '3', 
+    '2' 
+];
+
+
+
 
 export const rawHandRankings = [
     {

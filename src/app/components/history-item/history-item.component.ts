@@ -12,19 +12,18 @@ export class HistoryItemComponent implements OnInit {
     public appService: AppService
   ) { }
 
-  @Input() handIndex: number; // showed array is reverted
+  @Input() index: number; 
 
-  hand: string;
+  //hand: string;
 
   ngOnInit() {
-      this.hand = this.appService.playedHands[this.handIndex].toUpperCase();
+    //  this.hand = this.appService.playedHands[this.index].toUpperCase();
   }
 
 
-  get index(): number {
-    return this.appService.playedHands.length - this.handIndex - 1;
+  get hand(): string {
+    return this.appService.playedHands[this.index].toUpperCase();
   }
-
 
   onClick(): void {
     if (!this.hand) {
